@@ -1,0 +1,108 @@
+{% extends 'restaurant/base.html' %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <i class="fas fa-user-plus text-4xl accent-color mb-4"></i>
+            <h2 class="font-display text-3xl font-bold text-gray-900">Join Delicious Bites</h2>
+            <p class="mt-2 text-gray-600">Create your account to start ordering</p>
+        </div>
+        
+        <div class="bg-white rounded-xl shadow-lg p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2 accent-color"></i>Username
+                    </label>
+                    {{ form.username }}
+                </div>
+                
+                <div>
+                    <label for="id_password1" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 accent-color"></i>Password
+                    </label>
+                    {{ form.password1 }}
+                </div>
+                
+                <div>
+                    <label for="id_password2" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2 accent-color"></i>Confirm Password
+                    </label>
+                    {{ form.password2 }}
+                </div>
+                
+                {% if form.errors %}
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-red-800 mb-2">
+                            <i class="fas fa-exclamation-circle mr-2"></i>Please correct the following errors:
+                        </h4>
+                        <ul class="text-sm text-red-700 space-y-1">
+                            {% for field, errors in form.errors.items %}
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+                
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" required
+                           class="h-4 w-4 text-yellow-600 focus:ring-yellow-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 text-sm text-gray-600">
+                        I agree to the <a href="#" class="accent-color hover:underline">Terms of Service</a>
+                        and <a href="#" class="accent-color hover:underline">Privacy Policy</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full text-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Create Account
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'login' %}" class="accent-color hover:underline font-semibold">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Benefits of creating account -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <h4 class="font-semibold text-blue-800 mb-2">
+                <i class="fas fa-star mr-2"></i>Member Benefits
+            </h4>
+            <ul class="text-sm text-blue-700 space-y-1">
+                <li>• Save your favorite dishes</li>
+                <li>• Track your order history</li>
+                <li>• Receive exclusive offers</li>
+                <li>• Priority reservations</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Style the Django form fields */
+    #id_username, #id_password1, #id_password2 {
+        width: 100%;
+        padding: 12px 16px;
+        border-radius: 8px;
+        border: 2px solid #E5E7EB;
+        transition: all 0.3s ease;
+        background: white;
+    }
+    
+    #id_username:focus, #id_password1:focus, #id_password2:focus {
+        outline: none;
+        border-color: var(--primary-gold);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Bites - Fine Dining Experience</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Playfair Display for elegance + Inter for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-gold: #B8941F;
+            --cream: #FDF6E3;
+            --dark-brown: #2D1B00;
+            --light-brown: #8B4513;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #FDF6E3 0%, #F5F5DC 100%);
+            min-height: 100vh;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .accent-color {
+            color: var(--primary-gold);
+        }
+        
+        .accent-bg {
+            background-color: var(--primary-gold);
+        }
+        
+        .text-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 2px solid #E5E7EB;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, var(--dark-gold) 100%);
+            color: white;
+            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+        }
+        
+        .card-container {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .card-container:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-gold);
+        }
+        
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(45, 27, 0, 0.8) 0%, rgba(139, 69, 19, 0.6) 100%);
+        }
+        
+        .navbar-glass {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="navbar-glass sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="{% url 'home' %}" class="flex items-center space-x-3">
+                    <i class="fas fa-utensils text-2xl accent-color"></i>
+                    <span class="text-2xl font-display font-bold text-gray-800">Delicious Bites</span>
+                </a>
+                
+                <!-- Main navigation links -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="{% url 'home' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{% url 'menu' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium">
+                        <i class="fas fa-book-open mr-2"></i>Menu
+                    </a>
+                    {% if request.session.user_type == "admin" %}
+                        <a href="{% url 'admin_menu' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium">
+                            <i class="fas fa-cogs mr-2"></i>Manage Menu
+                        </a>
+                        <a href="{% url 'admin_orders' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium">
+                            <i class="fas fa-clipboard-list mr-2"></i>Orders
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- User navigation -->
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'cart' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium flex items-center">
+                            <i class="fas fa-clipboard-list mr-2"></i>My Orders
+                        </a>
+                        <span class="text-gray-600 font-medium">Welcome, {{ user.first_name|default:user.username }}!</span>
+                        <a href="{% url 'logout' %}" class="btn-primary">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="text-gray-600 hover:accent-color transition-colors duration-300 font-medium">Register</a>
+                        <a href="{% url 'login' %}" class="btn-primary">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-6 py-12 min-h-screen">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <i class="fas fa-utensils text-2xl accent-color"></i>
+                        <span class="text-xl font-display font-bold">Delicious Bites</span>
+                    </div>
+                    <p class="text-gray-400">Experience culinary excellence in an elegant atmosphere. Where every meal is a celebration.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 accent-color">Contact Info</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>123 Gourmet Street, Food District</p>
+                        <p><i class="fas fa-phone mr-2"></i>(555) 123-FOOD</p>
+                        <p><i class="fas fa-envelope mr-2"></i>hello@deliciousbites.com</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 accent-color">Hours</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p>Monday - Thursday: 11AM - 10PM</p>
+                        <p>Friday - Saturday: 11AM - 11PM</p>
+                        <p>Sunday: 11AM - 9PM</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 accent-color">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:accent-color transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:accent-color transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:accent-color transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Delicious Bites. All rights reserved. Crafted with ❤️ for food lovers.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
