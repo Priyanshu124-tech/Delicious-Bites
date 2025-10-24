@@ -32,5 +32,3 @@ python manage.py runserver
 ```
 
 ---
-
-This README was added to the repository and pushed to GitHub. Feel free to edit or ask me to expand it.
